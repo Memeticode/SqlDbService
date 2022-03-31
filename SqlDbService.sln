@@ -5,10 +5,7 @@ VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlDbService", "SqlDbService.csproj", "{67E6AD39-DAFE-4FBE-9C7C-5C0D5663F3D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlDbServiceTests", "..\SqlDbServiceTests\SqlDbServiceTests.csproj", "{38FEEB4F-B250-48C6-9EAA-F74B55C2F945}"
-	ProjectSection(ProjectDependencies) = postProject
-		{67E6AD39-DAFE-4FBE-9C7C-5C0D5663F3D0} = {67E6AD39-DAFE-4FBE-9C7C-5C0D5663F3D0}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlDbServiceTests", "SqlDbServiceTests\SqlDbServiceTests.csproj", "{39E05B8C-E62E-4D8A-A617-0E8DD7B37C4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,10 +17,10 @@ Global
 		{67E6AD39-DAFE-4FBE-9C7C-5C0D5663F3D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67E6AD39-DAFE-4FBE-9C7C-5C0D5663F3D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67E6AD39-DAFE-4FBE-9C7C-5C0D5663F3D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38FEEB4F-B250-48C6-9EAA-F74B55C2F945}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38FEEB4F-B250-48C6-9EAA-F74B55C2F945}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38FEEB4F-B250-48C6-9EAA-F74B55C2F945}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38FEEB4F-B250-48C6-9EAA-F74B55C2F945}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39E05B8C-E62E-4D8A-A617-0E8DD7B37C4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39E05B8C-E62E-4D8A-A617-0E8DD7B37C4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39E05B8C-E62E-4D8A-A617-0E8DD7B37C4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39E05B8C-E62E-4D8A-A617-0E8DD7B37C4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

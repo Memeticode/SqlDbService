@@ -1,35 +1,127 @@
 ﻿
-namespace SqlDbService;
+namespace SqlDbService.SqlServer;
 
-public class SqlServerDbScripter : ISqlDbScripter
+public class SqlServerActionScripter : ISqlDbActionScripter
 {
 
     //// Checking objects exist in DB
+    private string getCheckExistsWrapper(string script) => $@"
+        if exists({script})
+		begin 
+			select 1; 
+		end
+		else begin
+			select 0;
+		end";
 
-    // Table
-    public string CheckTableExists(IDbTable table) { throw new NotImplementedException(); }
-    public string CheckTableFieldExists(IDbTable table, IDbField field) { throw new NotImplementedException(); }
-    public string CheckTablePkIndexExists() { throw new NotImplementedException(); }
-    public string CheckTableIndexExists() { throw new NotImplementedException(); }
-    public string CheckTableTriggerExists() { throw new NotImplementedException(); }
+	public string CheckSchemaExists() =>
+		getCheckExistsWrapper(@"
+			select 1
+			from sys.schemas s
+			where s.name = @schemaName");
 
-    // View
-    public string CheckViewExists() { throw new NotImplementedException(); }
-    public string CheckViewFieldExists() { throw new NotImplementedException(); }
+	// Table
+	public string CheckTableExists() => 
+        getCheckExistsWrapper(@"
+			select 1
+			from sys.schemas s
+			join sys.tables t on s.schema_id = t.schema_id
+			where s.name = @schemaName
+			and t.name = @tableName");
+
+    public string CheckTableFieldExists() =>
+        getCheckExistsWrapper(@"
+			select 1
+			from sys.schemas s
+			join sys.tables t on s.schema_id = t.schema_id
+			join sys.columns c on t.object_id = c.object_id
+			where s.name = @schemaName
+			and t.name = @tableName
+			and c.name = @fieldName");
+    public string CheckTablePkIndexExists() =>
+        getCheckExistsWrapper(@"
+			select 1
+			from sys.schemas s
+			join sys.tables t on s.schema_id = t.schema_id
+			join sys.indexes i on t.object_id = i.object_id
+			where i.is_primary_key = 1
+			and s.name = @schemaName
+			and t.name = @tableName");
+    public string CheckTableIndexExists() =>
+        getCheckExistsWrapper(@"
+			select 1
+			from sys.schemas s
+			join sys.tables t on s.schema_id = t.schema_id
+			join sys.indexes i on t.object_id = i.object_id
+			where s.name = @schemaName
+			and t.name = @tableName
+			and i.name = @indexName");
+    public string CheckTableTriggerExists() =>	// trigger and table must be in same schema
+		getCheckExistsWrapper(@"
+			select 1
+			from sys.schemas s
+			join sys.tables t on s.schema_id = t.schema_id
+			join sys.triggers g on t.object_id = g.parent_id
+			where s.name = @schemaName
+			and t.name = @tableName
+			and g.name = @triggerName");
+
+	// View
+	public string CheckViewExists() =>
+        getCheckExistsWrapper(@"
+			select 1
+			from sys.schemas s
+			join sys.views v on s.schema_id = v.schema_id
+			where s.name = @schemaName
+			and v.name = @viewName");
+    public string CheckViewFieldExists() =>
+        getCheckExistsWrapper(@"
+			select 1
+			from sys.schemas s
+			join sys.views v on s.schema_id = v.schema_id
+			join sys.columns c on c.object_id = c.object_id
+			where s.name = @schemaName
+			and v.name = @viewName
+			and c.name = @fieldName");
 
 
 
-    //// Retrieve Db object metadata
+	// Index
+	public string CheckIndexExists() =>
+		getCheckExistsWrapper(@"
+			select 1
+			from sys.indexes i
+			where i.name = @indexName");
 
-    // Table
-    public string GetTables() => @"
+	// Trigger
+	public string CheckTriggerExists() =>
+		getCheckExistsWrapper(@"
+			select 1
+			from sys.triggers g
+			where g.name = @triggerName");
+
+
+
+
+	//// Retrieve Db object metadata
+
+	// Table
+	public string GetTables() => @"
 	    select s.name as [Schema]
 		    , t.name as [Name]
 	    from sys.schemas s
 	    join sys.tables t on s.schema_id = t.schema_id
 	    ";
 
-    public string GetTable(IDbTable table) { throw new NotImplementedException(); }
+    public string GetTable(IDbTable table) => @"
+	    select s.name as [Schema]
+		    , t.name as [Name]
+	    from sys.schemas s
+	    join sys.tables t on s.schema_id = t.schema_id
+		where s.name = @schemaName
+		and t.name = @tableName
+	    ";
+
     public string GetTableFields(IDbTable table) { throw new NotImplementedException(); }
     public string GetTableField(IDbTable table, IDbField field) { throw new NotImplementedException(); }
     public string GetTablePkIndex(IDbTable table) { throw new NotImplementedException(); }

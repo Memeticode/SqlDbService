@@ -1,24 +1,11 @@
-﻿namespace SqlDbService;
+﻿using SqlDbService.SqlServer;
 
-
-public class SqlDb
-{
-    public const string ConnectionString = "defc";
-    //public SqlDb() : base(Cnxn) { }
-
-}
-
-public interface ISqlDbContextManager
-{
-    public string GetConnectionString();
-    public ISqlDbScripter GetDbScripter();
-}
-
+namespace SqlDbService;
 public enum SqlDbSoftware
 {
     SqlServer
 }
-public class SqlDbContextManager : ISqlDbContextManager
+public class SqlDbContextManager 
 {
     public string? Server { get; set; }
     public string? Db { get; set; }
@@ -52,12 +39,12 @@ public class SqlDbContextManager : ISqlDbContextManager
         }
     }
 
-    public ISqlDbScripter GetDbScripter()
+    public ISqlDbActionScripter GetDbScripter()
     {
         switch (SqlSoftware)
         {
             case SqlDbSoftware.SqlServer:
-                return new SqlServerDbScripter();
+                return new SqlServerActionScripter();
             default:
                 throw new InvalidDataException("No scripter exists for specified Sql software type!");
         }
