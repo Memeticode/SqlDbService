@@ -3,6 +3,13 @@
 namespace SqlDbService;
 public interface IDbIndex
 {
-    public IDbTable table { get; }
+    public string Name { get; set; }
+
+}
+
+
+public class DbIndex: IDbIndex
+{
+    public string Name { get; set; }
 
 }
